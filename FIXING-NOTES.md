@@ -57,3 +57,21 @@ That fixed that.
     .pioenvs/d1_mini_pro/libFrameworkArduino.a(core_esp8266_main.cpp.o):(.text._Z9init_donev+0x8):
         undefined reference to `__eh_frame'
     collect2: error: ld returned 1 exit status
+
+[Platformio has it documented.](https://docs.platformio.org/en/latest/platforms/espressif8266.html#flash-size)
+
+So this goes to `platformio.ini``
+
+    build_flags = '-L.esp-rs-compiled-lib -llibgenerated -Wl,-Teagle.flash.16m14m.ld'
+
+But it still produces the "section `.text' will not fit" error above.
+
+Remove all files and start from scratch:
+
+    pio init -b d1_mini_pro
+    # put above `build_flags` to `platformio.ini`
+    /builder/build.sh
+
+Alas, no help.
+
+Maybe we need to try to learn to do it with C++ and `platformio` IDE first, then work our way toward a CLI chain.
