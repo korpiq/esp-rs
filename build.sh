@@ -10,6 +10,7 @@ readonly MRUSTC_DIR="${INSTALL_DIR}/mrustc"
 readonly SDK_ROOT="${INSTALL_DIR}/esp8266-arduino"
 readonly TOOLCHAIN_ROOT="${HOME}/.platformio/packages/toolchain-xtensa"
 readonly PROJECT_DIR="${PWD}"
+readonly BOARD="${BOARD:-${1:-$(sed -ne 's/^board = //p' platformio.ini 2>/dev/null || echo nodemcuv2)}}"
 
 function main() {
     if [[ "${1:-}" == '--install' ]]; then
@@ -26,6 +27,7 @@ function main() {
             echo 'Installation does not seem to be complete. Try running with --install.'
             exit 1
     fi
+    read -n 1 -p "BOARD: $BOARD ok? " && [ "$REPLY" = "y" ] || exit
     init_project
     generate_bindings
     compile_with_rustc
@@ -92,10 +94,10 @@ function checkout_git_revision() {
 function init_project() {
     if ! [[ -e platformio.ini ]]; then
         echo 'Initializing PlatformIO project...'
-        platformio init -b nodemcuv2
+        platformio init -b "$BOARD"
     fi
     if ! [[ -e .esp-rs-compiled-lib ]]; then
-        ln -s .pioenvs/nodemcuv2/libc72 .esp-rs-compiled-lib
+        ln -s "."pioenvs/$BOARD/libc72" .esp-rs-compiled-lib
     fi
     if ! grep -q libgenerated platformio.ini; then
         echo "build_flags = '-L.esp-rs-compiled-lib -llibgenerated'" >> platformio.ini
