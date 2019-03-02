@@ -60,7 +60,7 @@ That fixed that.
 
 [Platformio has it documented.](https://docs.platformio.org/en/latest/platforms/espressif8266.html#flash-size)
 
-So this goes to `platformio.ini``
+So this goes to `platformio.ini`
 
     build_flags = '-L.esp-rs-compiled-lib -llibgenerated -Wl,-Teagle.flash.16m14m.ld'
 
@@ -75,3 +75,8 @@ Remove all files and start from scratch:
 Alas, no help.
 
 Maybe we need to try to learn to do it with C++ and `platformio` IDE first, then work our way toward a CLI chain.
+
+Oh wow, apparently it might actually be that our little program carries so much baggage that we actually run out of IRAM:
+
+    https://github.com/esp8266/Arduino/issues/4551
+
