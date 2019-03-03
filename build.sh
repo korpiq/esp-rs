@@ -31,7 +31,7 @@ function main() {
     init_project
     generate_bindings
     compile_with_rustc
-    compile_woth_mrustc
+    compile_with_mrustc
     compile_with_platformio
 }
 
@@ -279,7 +279,7 @@ function compile_with_rustc() {
     cargo check --target i686-unknown-linux-gnu
 }
 
-function compile_woth_mrustc() {
+function compile_with_mrustc() {
     echo 'Transpiling project with mrustc'
     # Delete the previous generated files to ensure mrustc builds them again.
     rm -f lib/generated/*.hir*
