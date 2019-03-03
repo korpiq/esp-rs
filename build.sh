@@ -97,7 +97,7 @@ function init_project() {
         platformio init -b "$BOARD"
     fi
     if ! [[ -e .esp-rs-compiled-lib ]]; then
-        ln -s "."pioenvs/$BOARD/libc72" .esp-rs-compiled-lib
+        ln -s ".pioenvs/$BOARD/libc72" .esp-rs-compiled-lib
     fi
     if ! grep -q libgenerated platformio.ini; then
         echo "build_flags = '-L.esp-rs-compiled-lib -llibgenerated'" >> platformio.ini
